@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}STRONA DO USUWANIA WYBRANYCH KODÓW{% endblock %}
+
+{% block body %}
+
+    <form action="{{ path('removeCodes') }}">
+        <label for="codes">
+            <textarea id="codes" rows="4" cols="50"></textarea>
+        </label>
+        <button type="submit">Usuń</button>
+    </form>
+    <li><a href={{ path('index') }}>Strona Główna</a></li>
+{% endblock %}

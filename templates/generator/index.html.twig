@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}APLIKACJA DO ZARZĄDZANIA BAZĄ DANYCH{% endblock %}
+
+{% block body %}
+    <nav>
+        <ul>
+            <li><a href={{ path('generateCodes') }}>Generuj nowe kody(10)</a></li>
+            <li><a href={{ path('removeCodes') }}>Usuń wybrane kody</a></li>
+        </ul>
+    </nav>
+{% endblock %}
