@@ -4,8 +4,9 @@ namespace App\Services;
 
 
 use App\Entity\Code;
+use App\Helper;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
+
 
 
 class GeneratorService implements GenerateInterface
@@ -40,7 +41,7 @@ class GeneratorService implements GenerateInterface
     {
         $codesFromDatabase = $this->entityManager->getRepository(Code::class)->getAllValueAsArray();
 
-        $codesToRemoveArray = array_filter(explode(',', preg_replace('/\s+/', '', $codes)));
+        $codesToRemoveArray = array_filter(explode(',', Helper::RemoveAllWhiteSignFromString($codes)));
 
         if (!empty($codesToRemoveArray)) {
             foreach ($codesToRemoveArray as $item) {
@@ -63,6 +64,9 @@ class GeneratorService implements GenerateInterface
     }
 
 
+    /**
+     * @throws \Exception
+     */
     public function generate(): void
     {
         $duplicates = [];
@@ -70,7 +74,7 @@ class GeneratorService implements GenerateInterface
             $entity = new Code();
             $entity->setDate(new \DateTime());
             try {
-                $entity->setUniqueCode('dd');
+                $entity->setUniqueCode(Helper::RemoveWhiteSpaceFromString(random_bytes(20)));
             } catch (\Exception $e) {
             }
 
@@ -78,10 +82,12 @@ class GeneratorService implements GenerateInterface
             $this->entityManager->persist($entity);
         }
 
+        // Check if exist duplicate items
         if (count(array_unique($duplicates)) === count($duplicates)) {
             $this->entityManager->flush();
         } else {
-            throw new \Exception("Arrays has duplicate value!");
+            throw new \Exception("Arrays has duplicate values!");
         }
     }
+
 }
