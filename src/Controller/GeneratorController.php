@@ -37,16 +37,6 @@ class GeneratorController extends AbstractController
     public function removeCodes(GeneratorService $generatorService, Request $request)
     {
         $codes = $generatorService->bathRemove($request->request->get('codes'));
-
-        if ($request->isMethod('POST')) {
-            if ($codes[0] == "") {
-                $this->addFlash('success', 'Usunięto');
-                return $this->render('generator/remove.html.twig', ['codes' => $codes]);
-            } else {
-                $this->addFlash('danger', 'Niektóre kody nie są zgodne z bazą danych');
-                return $this->render('generator/remove.html.twig', ['codes' => $codes]);
-            }
-        }
         return $this->render('generator/remove.html.twig', ['codes' => $codes]);
     }
 }
