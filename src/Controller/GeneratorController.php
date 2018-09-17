@@ -33,7 +33,7 @@ class GeneratorController extends AbstractController
         }catch (\Exception $exception){
             return new Response($exception->getMessage());
         }
-        return new Response("Wygenerowano");
+        return $this->redirectToRoute("index");
     }
 
     /**
