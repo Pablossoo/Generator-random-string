@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CodeRepository;
+use App\Services\GeneratorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,11 +29,13 @@ class GeneratorController extends AbstractController
 
     /**
      * @Route("/usun", name="removeCodes")
+     * @param GeneratorService $generatorService
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeCodes()
+    public function removeCodes(GeneratorService $generatorService)
     {
-        //TODO action to remove codes via textarea
+        $codes = $generatorService->bathRemove();
 
-        return $this->render('generator/remove.html.twig');
+        return $this->render('generator/remove.html.twig', ['codes' => $codes]);
     }
 }
