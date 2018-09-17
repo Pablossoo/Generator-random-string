@@ -10,44 +10,33 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GeneratorService implements GenerateInterface
 {
-    /**
-     * @var RequestStack
-     */
-    private $request;
 
     /**
      * @var CodeRepository
      */
-    private $codeRepostiroy;
+    private $codeRepository;
 
-    /**
-     * @var SessionInterface
-     */
-    private $session;
 
     /**
      * GeneratorService constructor.
-     * @param RequestStack $request
-     * @param CodeRepository $codeRepostiroy
-     * @param SessionInterface $session
+     * @param CodeRepository $codeRepository
      */
-    public function __construct(RequestStack $request, CodeRepository $codeRepostiroy, SessionInterface $session)
+    public function __construct(CodeRepository $codeRepository)
     {
-        $this->request = $request;
-        $this->codeRepostiroy = $codeRepostiroy;
-        $this->session = $session;
+        $this->codeRepository = $codeRepository;
+
     }
 
 
     /**
+     * @param string $codes
      * @return array
      * Method divide request on array and remove \n/whitespace. Return failed codes, or empty array if  remove success
      */
-    public function bathRemove(): array
+    public function bathRemove(string $codes = null): array
     {
-        $request = $this->request->getMasterRequest();
-        $codesFromDatabase = $this->codeRepostiroy->findAll();
-        $codesToRemoveArray = explode(',', preg_replace( "/\r|\n/", "",trim($request->get('codes'))));
+        $codesFromDatabase = $this->codeRepository->findAll();
+        $codesToRemoveArray = explode(',', preg_replace("/\r|\n/", "", $codes));
 
         return array_diff($codesToRemoveArray, $codesFromDatabase);
     }
