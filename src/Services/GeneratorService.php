@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Entity\Code;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Config\Definition\Exception\DuplicateKeyException;
 
 
 class GeneratorService implements GenerateInterface
@@ -16,6 +17,7 @@ class GeneratorService implements GenerateInterface
      * @var EntityManagerInterface
      */
     private $entityManager;
+
 
     /**
      * GeneratorService constructor.
@@ -61,8 +63,25 @@ class GeneratorService implements GenerateInterface
     }
 
 
-    public function generate()
+    public function generate(): void
     {
+        $duplicates = [];
+        for ($i = 0; $i < 10; $i++) {
+            $entity = new Code();
+            $entity->setDate(new \DateTime());
+            try {
+                $entity->setUniqueCode('dd');
+            } catch (\Exception $e) {
+            }
 
+            $duplicates[] = $entity->getUniqueCode();
+            $this->entityManager->persist($entity);
+        }
+
+        if (count(array_unique($duplicates)) === count($duplicates)) {
+            $this->entityManager->flush();
+        } else {
+            throw new \Exception("Arrays has duplicate value!");
+        }
     }
 }
