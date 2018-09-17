@@ -6,6 +6,7 @@ use App\Repository\CodeRepository;
 use App\Services\GeneratorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class GeneratorController extends AbstractController
@@ -22,10 +23,17 @@ class GeneratorController extends AbstractController
 
     /**
      * @Route("/generuj", name="generateCodes")
+     * @param GeneratorService $generatorService
+     * @return Response
      */
-    public function generate()
+    public function generate(GeneratorService $generatorService)
     {
-        //TODO action to generate unique code in loop
+        try{
+            $generatorService->generate();
+        }catch (\Exception $exception){
+            return new Response($exception->getMessage());
+        }
+        return new Response("Wygenerowano");
     }
 
     /**
