@@ -30,7 +30,9 @@ class GeneratorService implements GenerateInterface
     /**
      * @param string $codes
      * @return array
-     * Method divide request on array and remove \n/whitespace. Return failed codes, or empty array if  remove success
+     * Method divide request on array and remove \n/whitespace.
+     * STAUTS = SUCCESS/FAILED
+     * return Status or empty array
      */
     public function bathRemove(string $codes = null): array
     {
