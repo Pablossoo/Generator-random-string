@@ -4,10 +4,10 @@
 
 {% block body %}
 
-    {% for flashMessage in app.session.flashbag.get('success') %}
-
-        {{ flashMessage }}
-
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+                {{ message }}
+        {% endfor %}
     {% endfor %}
     <form action="{{ path('removeCodes') }}" method="post">
         <label for="codes">
