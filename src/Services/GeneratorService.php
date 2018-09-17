@@ -41,8 +41,9 @@ class GeneratorService implements GenerateInterface
     {
         $codesFromDatabase = $this->entityManager->getRepository(Code::class)->getAllValueAsArray();
 
-        $codesToRemoveArray = array_filter(explode(',', Helper::RemoveAllWhiteSignFromString($codes)));
+        $codesToRemoveArray = array_filter(preg_split('/[,\n]+/', Helper::RemoveWhiteSpaceFromString($codes)));
 
+        print_r($codesToRemoveArray);
         if (!empty($codesToRemoveArray)) {
             foreach ($codesToRemoveArray as $item) {
                 $codesToRemove = $this->entityManager->getRepository(Code::class)->findOneBy(['uniqueCode' => $item]);
