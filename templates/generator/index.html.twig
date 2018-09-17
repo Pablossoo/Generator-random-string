@@ -9,4 +9,23 @@
             <li><a href={{ path('removeCodes') }}>Usuń wybrane kody</a></li>
         </ul>
     </nav>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Kod</th>
+            <th>Data</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for code in  list %}
+            <tr>
+                <td>{{ code.id }}</td>
+                <td>{{ code.uniqueCode }}</td>
+                <td>{{ code.date|date('Y-m-d') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

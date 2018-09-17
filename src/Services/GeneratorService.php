@@ -3,28 +3,27 @@
 namespace App\Services;
 
 
-use App\Repository\CodeRepository;
+use App\Entity\Code;
+use Doctrine\ORM\EntityManagerInterface;
 
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GeneratorService implements GenerateInterface
 {
 
+    private CONST SUCCESS = 'SUCCESS';
+    private CONST DANGER = 'DANGER';
     /**
-     * @var CodeRepository
+     * @var EntityManagerInterface
      */
-    private $codeRepository;
-
+    private $entityManager;
 
     /**
      * GeneratorService constructor.
-     * @param CodeRepository $codeRepository
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(CodeRepository $codeRepository)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->codeRepository = $codeRepository;
-
+        $this->entityManager = $entityManager;
     }
 
 
@@ -35,15 +34,33 @@ class GeneratorService implements GenerateInterface
      */
     public function bathRemove(string $codes = null): array
     {
-        $codesFromDatabase = $this->codeRepository->findAll();
-        $codesToRemoveArray = explode(',', preg_replace("/\r|\n/", "", $codes));
+        $codesFromDatabase = $this->entityManager->getRepository(Code::class)->getAllValueAsArray();
 
-        return array_diff($codesToRemoveArray, $codesFromDatabase);
+        $codesToRemoveArray = array_filter(explode(',', preg_replace('/\s+/', '', $codes)));
+
+        if (!empty($codesToRemoveArray)) {
+            foreach ($codesToRemoveArray as $item) {
+                $codesToRemove = $this->entityManager->getRepository(Code::class)->findOneBy(['uniqueCode' => $item]);
+                if ($codesToRemove != null) {
+                    $this->entityManager->remove($codesToRemove);
+                }
+            }
+
+            // check if all passed post values exist in database, if not return difference codes as array
+            if (empty(array_filter(array_diff($codesToRemoveArray, array_column($codesFromDatabase, 'uniqueCode'))))) {
+                $this->entityManager->flush();
+                return ['status' => static::SUCCESS];
+            } else {
+                return ['status' => static::DANGER, 'value' => array_filter(array_diff($codesToRemoveArray, array_column($codesFromDatabase, 'uniqueCode')))];
+            }
+        }
+
+        return [];
     }
 
 
     public function generate()
     {
-        // TODO: Implement generate() method.
+
     }
 }
