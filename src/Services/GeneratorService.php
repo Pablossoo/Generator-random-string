@@ -43,7 +43,6 @@ class GeneratorService implements GenerateInterface
 
         $codesToRemoveArray = array_filter(preg_split('/[,\n]+/', Helper::RemoveWhiteSpaceFromString($codes)));
 
-        print_r($codesToRemoveArray);
         if (!empty($codesToRemoveArray)) {
             foreach ($codesToRemoveArray as $item) {
                 $codesToRemove = $this->entityManager->getRepository(Code::class)->findOneBy(['uniqueCode' => $item]);
