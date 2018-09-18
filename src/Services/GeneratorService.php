@@ -8,7 +8,6 @@ use App\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 
 
-
 class GeneratorService implements GenerateInterface
 {
 
@@ -41,11 +40,15 @@ class GeneratorService implements GenerateInterface
     {
         $codesFromDatabase = $this->entityManager->getRepository(Code::class)->getAllValueAsArray();
 
-        $codesToRemoveArray = array_filter(preg_split('/[,\n]+/', Helper::RemoveWhiteSpaceFromString($codes)));
+        $codesToRemoveArray = array_filter(preg_split('/[\n,]+/', Helper::RemoveWhiteSpaceFromString($codes)));
+
+        // Remove new line \r
+        $codesToRemoveArray= array_map('trim',$codesToRemoveArray);
 
         if (!empty($codesToRemoveArray)) {
             foreach ($codesToRemoveArray as $item) {
                 $codesToRemove = $this->entityManager->getRepository(Code::class)->findOneBy(['uniqueCode' => $item]);
+
                 if ($codesToRemove != null) {
                     $this->entityManager->remove($codesToRemove);
                 }
