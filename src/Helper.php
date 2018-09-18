@@ -6,7 +6,7 @@ namespace App;
 
 class Helper
 {
-    public static function RemoveWhiteSpaceFromString(string $string)
+    public static function RemoveWhiteSpaceFromString(string $string = null)
     {
         return str_replace(' ', '', $string);
     }
