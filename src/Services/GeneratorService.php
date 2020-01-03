@@ -2,22 +2,18 @@
 
 namespace App\Services;
 
-
 use App\Entity\Code;
 use App\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 
-
 class GeneratorService implements GenerateInterface
 {
-
     private CONST SUCCESS = 'SUCCESS';
     private CONST DANGER = 'DANGER';
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
-
 
     /**
      * GeneratorService constructor.
@@ -27,7 +23,6 @@ class GeneratorService implements GenerateInterface
     {
         $this->entityManager = $entityManager;
     }
-
 
     /**
      * @param string $codes
@@ -65,7 +60,6 @@ class GeneratorService implements GenerateInterface
 
         return [];
     }
-
 
     /**
      * @throws \Exception
