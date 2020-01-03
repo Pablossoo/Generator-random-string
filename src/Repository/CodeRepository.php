@@ -19,13 +19,10 @@ class CodeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Code::class);
     }
-
-
+    
     public function getAllValueAsArray()
     {
         return $this->createQueryBuilder('c')
             ->getQuery()->getResult(Query::HYDRATE_ARRAY);
-
     }
-
 }
