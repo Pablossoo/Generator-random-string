@@ -1,9 +1,8 @@
-# Zadanie_rekrutacyjne
+# generate random string with conditionals:
 
-Zadanie rekrutacyjne polegajace na generowaniu losowych stringów, oraz ich kasowaniu. 
+Conditionals to generate random strings; 
 
-warunki; 
-
-1 generowany string nie może zawierać spacji 
-2 stringi do skasowania podajemy po przecinku lub enterze, spacje będą ignorowane
-3 przed zapisaniem do bazy danych wygenerowanych stringow skrypt sprawdza czy taki string już nie istnieje, jeżeli tak, rzucaony jest wyjątek.
+-  generated  string can't include space
+-  strings to remove we need to type after comma or enter, all spaces will be ignored
+-  we need to check if the generated string exists in the database if so, we need to throw an exception
+.
